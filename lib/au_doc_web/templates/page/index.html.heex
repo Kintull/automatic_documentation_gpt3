@@ -1,0 +1,39 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css"/>
+</head>
+
+<body>
+<div class="flex flex-no-wrap">
+    <div class="w-64 mx-10 mt-16 justify-between bg-gray-100">
+        <div id="tree"></div>
+    </div>
+    <div class="container mx-auto mt-16 py-10 w-11/12 bg-yellow-100">
+        <div id="event_result" class="mx-10"></div>
+    </div>
+</div>
+</body>
+
+<script>
+    var jstree = <%= raw(@jstree)  %>;
+    var lookup_map = <%= raw(@lookup_map) %>;
+
+    $('#tree').jstree(jstree)
+
+    $('#tree')
+        // listen for event
+        .on('changed.jstree', function (e, data) {
+            var id = data.instance.get_node(data.selected[0]).id
+            var content = lookup_map[id]
+
+            $('#event_result').html('Content: ' + content);
+        })
+        .jstree(jstree)
+</script>
+
+</html>
